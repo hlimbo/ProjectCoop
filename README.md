@@ -1,14 +1,11 @@
 # ProjectCoop
 ---
 ## Instructions to clone
-1. Create an empty 2D Unity Project named ProjectCoop
-2. Click on clone/download button
-3. Clone with HTTPS and copy the repository url
-4. clone repo in the same directory path where ProjectCoop directory resides
-* e.g. if your ProjectCoop unity folder is located at 
-`/mnt/c/Users/limbo/Desktop` then clone the repository starting at that path location
-
-## Example
+1. Click on clone/download button
+2. Clone with HTTPS and copy the repository url
+3. clone repo in the directory of your choosing:
 ```bash
 $ git clone https://github.com/hlimbo/ProjectCoop.git
 ```
+4. Open project folder using Unity
+5. Have fum!
