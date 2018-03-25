@@ -1,0 +1,96 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content='width=device-width, initial-scale=1, maximum-scale=1 user-scalable=0' name='viewport'>
+  <title>AirConsole Controller</title>
+  <link href='https://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
+  <!-- AirConsole-Controls -->
+  <link rel="stylesheet" type="text/css" href="airconsole-controls/button/button.css">
+  <link rel="stylesheet" type="text/css" href="airconsole-controls/dpad/dpad.css">
+  <!-- Styles -->
+  <link rel="stylesheet" type="text/css" href="controller/styles/styles.css">
+  <link rel="stylesheet" type="text/css" href="controller/styles/controls.css">
+</head>
+<body>
+
+	<div id="controller-container">
+		<!-- REPLACE_HERE START -->
+		<!-- This can be removed in the exported version -->
+		<!--<div id="info">START BY ADDING ELEMENTS BELOW</div>-->
+		<div id="view-0" class="view" style="display: flex;">
+			<div id="view-0-section-0" class="section horizontal " style="height: 100%;">
+				<div id="left" class="button-150-300 button-element element">
+					<div class="button-text">&lt;- Left</div>
+				</div>
+				<div id="right" class="button-150-300 button-element element">
+					<div class="button-text">Right -&gt;</div>
+				</div>
+			</div>
+			<div id="view-0-section-1" class="section " style="height: 100%;">
+				<div id="emit_jump" class="button-300-150 button-element element">
+					<div class="button-text">Emit Jump</div>
+				</div>
+				<div id="emit_dash" class="button-300-150 button-element element">
+					<div class="button-text">Emit Dash</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+  var ctrl_data = '{"orientation":"landscape","selected_view_id":"view-0","views":[{"id":"view-0","sections":[{"id":"view-0-section-0","elements":[{"id":"left","key":"button","name":"Button","tmpl":"button","constructor_fn":"ButtonElement","options":{"constructor_args":{},"attr_id":"view-0-section-0-element-0","css_classes":"button-150-300","view_action":{"target":null,"view_id":null},"label":"<- Left","send_onrelease":true,"message_data":[]}},{"id":"right","key":"button","name":"Button","tmpl":"button","constructor_fn":"ButtonElement","options":{"constructor_args":{},"attr_id":"view-0-section-0-element-1","css_classes":"button-150-300","view_action":{"target":null,"view_id":null},"label":"Right ->","send_onrelease":true,"message_data":[]}}],"classes":["horizontal"]},{"id":"view-0-section-1","elements":[{"id":"emit_jump","key":"button","name":"Button","tmpl":"button","constructor_fn":"ButtonElement","options":{"constructor_args":{},"attr_id":"view-0-section-1-element-0","css_classes":"button-300-150","view_action":{"target":null,"view_id":null},"label":"Emit Jump","send_onrelease":false,"message_data":[]}},{"id":"emit_dash","key":"button","name":"Button","tmpl":"button","constructor_fn":"ButtonElement","options":{"constructor_args":{},"attr_id":"view-0-section-1-element-1","css_classes":"button-300-150","view_action":{"target":null,"view_id":null},"label":"Emit Dash","send_onrelease":false,"message_data":[]}}],"classes":[]}]}]}';
+		</script>
+
+		<!-- REPLACE_HERE END -->
+	</div>
+
+  <!-- 3rd Party Libs -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script type="text/javascript" src="controller/libs/handlebars-v4.0.5.js"></script>
+  <!-- AIRCONSOLE -->
+  <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-latest.js"></script>
+  <script type="text/javascript" src="controller/libs/airconsole_view_manager.js"></script>
+  <!-- AIRCONSOLE CONTROLS -->
+  <script type="text/javascript" src="airconsole-controls/button/button.js"></script>
+  <script type="text/javascript" src="airconsole-controls/dpad/dpad.js"></script>
+  <script type="text/javascript" src="airconsole-controls/swipe-analog/swipe-analog.js"></script>
+  <script type="text/javascript" src="airconsole-controls/swipe-digital/swipe-digital.js"></script>
+  <!-- GENERATOR -->
+  <!--<script type="text/javascript" src="controller/js/controller_generator.js"></script>
+  <script type="text/javascript" src="controller/js/main.js"></script>
+	  -->
+  <!-- controller message passing (controller bindings) -->
+  <script type="text/javascript">
+	//note: must COMMENT OUT airconsole.onReady function in main.js and controller_generator.js
+  	var airconsole = new AirConsole({ "orientation": AirConsole.ORIENTATION_LANDSCAPE });
+	//left
+  	new Button("left", {
+  		"down": function () {
+  			airconsole.message(AirConsole.SCREEN, { "left": true });
+  		},
+  		"up": function () {
+  			airconsole.message(AirConsole.SCREEN, { "left": false });
+  		}
+  	});
+  	//right
+  	new Button("right", {
+  		"down": function () {
+  			airconsole.message(AirConsole.SCREEN, { "right": true });
+  		},
+  		"up": function () {
+  			airconsole.message(AirConsole.SCREEN, { "right": false });
+  		}
+  	});
+  	new Button("emit_jump", {
+  		"down" : function() {
+  			airconsole.message(AirConsole.SCREEN, {"emit_jump": true});
+  		}
+  	});
+  	new Button("emit_dash", {
+  		"down" : function() {
+  			airconsole.message(AirConsole.SCREEN, {"emit_dash": true});
+  		}
+  	});
+  </script>
+</body>
+</html>
