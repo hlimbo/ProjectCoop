@@ -98,6 +98,16 @@ MonoBehaviour:
   dashActiveDuration: 0.15
   dashCDDuration: 1
   dashTimer: 0
+  airState: 2
+  jumpHeight: 5
+  timeToJumpApex: 0.5
+  gravity: 0
+  recordedJumpHeight: 0
+  jumpSpeed: 150
+  timeElapsed: 0
+  floorMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &114408111222517556
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -107,8 +107,11 @@ public class MonitorReceiver : MonoBehaviour {
 
     void OnDestroy()
     {
-        AirConsole.instance.onMessage -= OnMessage;
-        AirConsole.instance.onConnect -= OnConnect;
-        AirConsole.instance.onDisconnect -= OnDisconnect;
+        if (AirConsole.instance != null)
+        {
+            AirConsole.instance.onMessage -= OnMessage;
+            AirConsole.instance.onConnect -= OnConnect;
+            AirConsole.instance.onDisconnect -= OnDisconnect;
+        }
     }
 }

@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 78965528}
   - component: {fileID: 78965531}
   - component: {fileID: 78965530}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 466375631}
   - component: {fileID: 466375630}
   - component: {fileID: 466375633}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +475,7 @@ GameObject:
   - component: {fileID: 1190875741}
   - component: {fileID: 1190875740}
   - component: {fileID: 1190875743}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,7 +688,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4927603569312026, guid: 06547b45b0a87e04c98b7c273567b562, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.52
+      value: 1.95
       objectReference: {fileID: 0}
     - target: {fileID: 4927603569312026, guid: 06547b45b0a87e04c98b7c273567b562, type: 2}
       propertyPath: m_LocalPosition.z
@@ -733,7 +733,7 @@ GameObject:
   - component: {fileID: 1648590059}
   - component: {fileID: 1648590058}
   - component: {fileID: 1648590061}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

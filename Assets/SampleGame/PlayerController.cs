@@ -14,29 +14,55 @@ public class PlayerController : MonoBehaviour {
         COOLDOWN
     };
 
+    public enum AirState
+    {
+        FLOOR,
+        JUMPING,
+        FALLING
+    };
+
     #region Player Properties
     public float moveAccel = 350f;
     public float maxMoveSpeed = 500f;
     public Direction direction = Direction.RIGHT;
 
-    public DashState dashState = DashState.READY;
+    [SerializeField] DashState dashState = DashState.READY;
     public float dashAccel = 25f;
     public float dashActiveDuration = 0.15f;
     public float dashCDDuration = 1f;
-    [SerializeField]
-    float dashTimer = 0f;
+    [SerializeField] float dashTimer = 0f;
+
+    [SerializeField] AirState airState = AirState.FALLING;
+    public float jumpHeight;
+    public float timeToJumpApex;
+    [SerializeField] float gravity;
+    float beginJumpY;
+    float beginJumpTime;
+    [SerializeField] float recordedJumpHeight;
+    [SerializeField] float jumpSpeed;
+    [SerializeField] float timeElapsed;
+    public LayerMask floorMask;
     #endregion
 
     #region Component References
     private InputMap input;
     public InputMap Input { get { return input; } }
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
     #endregion
 
     // Use this for initialization
     void Start () {
         input = GetComponent<InputMap>();
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+
+        //solve for gravity and jumpSpeed based on timeToJumpApex and jumpHeight
+        //d = vi * t + (1/2) * a * t^2 where vi = initial jump velocity = 0
+        //d = (1/2) * a * t^2
+        gravity = (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+        Physics2D.gravity = new Vector2(Physics2D.gravity.x, -gravity);
+        jumpSpeed = gravity * timeToJumpApex;
 	}
 	
 	// Update is called once per frame
@@ -60,10 +86,41 @@ public class PlayerController : MonoBehaviour {
             rb.velocity = new Vector2(0.0f, rb.velocity.y);
         }
 
-        if (input.GetKey(InputMap.JUMP))
+        if (airState == AirState.FLOOR && input.GetKey(InputMap.JUMP))
         {
             Debug.Log(string.Format("{0} is jumping", name));
             input.SetKey(InputMap.JUMP, false);
+            airState = AirState.JUMPING;
+            beginJumpY = rb.position.y;
+            beginJumpTime = Time.time;
+        }
+
+        //fixed jump height
+        if(airState == AirState.JUMPING)
+        {
+            timeElapsed = Time.time - beginJumpTime;
+            recordedJumpHeight = rb.position.y - beginJumpY;
+            if(timeElapsed < timeToJumpApex)
+            {
+                float jumpModifier = 1.5f;
+                float jumpVelPercent = Mathf.InverseLerp(0.0f, jumpHeight * jumpModifier, recordedJumpHeight);
+                float newJumpVelocity = Mathf.Lerp(0.0f, jumpSpeed, 1.0f - jumpVelPercent);
+                rb.velocity = new Vector2(rb.velocity.x, newJumpVelocity);
+            }
+            else
+            {
+                airState = AirState.FALLING;
+            }
+
+            recordedJumpHeight = rb.position.y - beginJumpY;
+        }
+
+        if(airState == AirState.FALLING)
+        {
+            Vector2 footPos = new Vector2(rb.position.x, rb.position.y - sr.bounds.extents.y);
+            bool isOnFloor = Physics2D.OverlapCircle(footPos, 0.1f, floorMask);
+            if (isOnFloor)
+                airState = AirState.FLOOR;
         }
 
         Vector2 dashForce = Vector2.zero;
