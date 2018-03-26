@@ -6,10 +6,25 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour {
 
+    public enum Direction { LEFT = -1, RIGHT = 1 };
+    public enum DashState
+    {
+        READY,
+        DASHING,
+        COOLDOWN
+    };
+
     #region Player Properties
-    public float speed = 350f;
-    public bool isFacingRight = true;
-    public Vector2 dashForce = new Vector2(800f, 0f);
+    public float moveAccel = 350f;
+    public float maxMoveSpeed = 500f;
+    public Direction direction = Direction.RIGHT;
+
+    public DashState dashState = DashState.READY;
+    public float dashAccel = 25f;
+    public float dashActiveDuration = 0.15f;
+    public float dashCDDuration = 1f;
+    [SerializeField]
+    float dashTimer = 0f;
     #endregion
 
     #region Component References
@@ -27,33 +42,73 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        //movement related calculations
+        Vector2 moveForce = Vector2.zero;
         if (input.GetKey(InputMap.LEFT))
         {
-            rb.velocity = new Vector2(-speed * Time.deltaTime, rb.velocity.y);
-            isFacingRight = false;
+            direction = Direction.LEFT;
+            moveForce.x = moveAccel * Time.deltaTime * (int)direction;
         }
         else if (input.GetKey(InputMap.RIGHT))
         {
-            rb.velocity = new Vector2(speed * Time.deltaTime, rb.velocity.y);
-            isFacingRight = true;
+            direction = Direction.RIGHT;
+            moveForce.x = moveAccel * Time.deltaTime * (int)direction;
         }
-        else
-            rb.velocity = Vector2.zero;
+        else if(!input.GetKey(InputMap.LEFT) && !input.GetKey(InputMap.RIGHT) && dashState != DashState.DASHING)
+        {
+            //instant falloff of x-axis movement speed
+            rb.velocity = new Vector2(0.0f, rb.velocity.y);
+        }
 
-        if(input.GetKey(InputMap.JUMP))
+        if (input.GetKey(InputMap.JUMP))
         {
             Debug.Log(string.Format("{0} is jumping", name));
             input.SetKey(InputMap.JUMP, false);
         }
 
-        if (input.GetKey(InputMap.DASH))
+        Vector2 dashForce = Vector2.zero;
+        if (dashState == DashState.READY && input.GetKey(InputMap.DASH))
         {
             Debug.Log(string.Format("{0} is dashing", name));
-            if (isFacingRight)
-                rb.MovePosition(rb.position + dashForce * Time.deltaTime);
-            else
-                rb.MovePosition(rb.position - dashForce * Time.deltaTime);
             input.SetKey(InputMap.DASH, false);
+            dashState = DashState.DASHING;
+            dashForce = new Vector2(dashAccel, 0f);
+        }
+
+        rb.AddForce(moveForce, ForceMode2D.Impulse);
+
+        if (dashState != DashState.DASHING)
+        {
+            //clamp move speed
+            rb.velocity = (Mathf.Abs(rb.velocity.x) > maxMoveSpeed) ? new Vector2(maxMoveSpeed * (int)direction, rb.velocity.y) : rb.velocity;
+        }
+
+        if (dashState == DashState.DASHING)
+        {
+            dashTimer += Time.deltaTime;
+            if (dashTimer >= dashActiveDuration)
+            {
+                dashTimer = 0f;
+                dashState = DashState.COOLDOWN;
+            }
+            else
+            {
+                rb.AddForce(dashForce * (int)direction, ForceMode2D.Impulse);
+            }
+        }
+
+        if(dashState == DashState.COOLDOWN)
+        {
+            dashTimer += Time.deltaTime;
+            if(dashTimer <= dashCDDuration)
+            {
+                dashTimer = 0f;
+                dashState = DashState.READY;
+            }
+            else
+            {
+                rb.AddForce(dashForce * (int)direction * -1, ForceMode2D.Impulse);
+            }
         }
 
 	}
