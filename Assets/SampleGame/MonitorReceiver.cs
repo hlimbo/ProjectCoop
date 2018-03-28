@@ -54,6 +54,9 @@ public class MonitorReceiver : MonoBehaviour {
                 p2.Input.SetKey(InputMap.DASH, true);
             }
 
+            //TODO: radial signal transmission where circle collider expands over time at a fixed rate and distance
+
+
         }
         else if(active_player == 1)
         {
