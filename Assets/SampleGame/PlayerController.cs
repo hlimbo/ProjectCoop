@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(InputMap))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CircleRenderer))]
 public class PlayerController : MonoBehaviour {
 
     public enum Direction { LEFT = -1, RIGHT = 1 };
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour {
     public InputMap Input { get { return input; } }
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    private CircleRenderer cr;
     #endregion
 
     // Use this for initialization
@@ -56,6 +58,7 @@ public class PlayerController : MonoBehaviour {
         input = GetComponent<InputMap>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        cr = GetComponent<CircleRenderer>();
 
         //solve for gravity and jumpSpeed based on timeToJumpApex and jumpHeight
         //d = vi * t + (1/2) * a * t^2 where vi = initial jump velocity = 0
@@ -168,5 +171,28 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
+        if(Input.GetKey(InputMap.EMIT_DASH) || Input.GetKey(InputMap.EMIT_JUMP))
+        {
+            cr.broadcastSignal();
+        }
+
 	}
+
+    public void processSignal(GameObject sender)
+    {
+        PlayerController pc = sender.GetComponent<PlayerController>();
+        Debug.Log("processing signal");
+        if(pc.Input.GetKey(InputMap.EMIT_JUMP))
+        {
+            Input.SetKey(InputMap.JUMP, true);
+            Debug.Log("stopping emit jump");
+            pc.Input.SetKey(InputMap.EMIT_JUMP, false);
+        }
+        else if (pc.Input.GetKey(InputMap.EMIT_DASH))
+        {
+            Input.SetKey(InputMap.DASH, true);
+            Debug.Log("stopping emit dash");
+            pc.Input.SetKey(InputMap.EMIT_DASH, false);
+        }
+    }
 }

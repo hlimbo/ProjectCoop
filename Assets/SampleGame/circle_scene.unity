@@ -242,10 +242,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eec1a2a58881044eac31e3af1255644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2
+  radius: 0.5
   center: {x: 0, y: 0, z: 0}
   numSegments: 30
   timeToGrow: 1.5
+  currentRadius: 0
   targetRadius: 8
   radiusRate: 0
 --- !u!58 &153146941

@@ -43,15 +43,15 @@ public class MonitorReceiver : MonoBehaviour {
             p1.Input.SetKey(InputMap.EMIT_JUMP, hasEmitJump);
             p1.Input.SetKey(InputMap.EMIT_DASH, hasEmitDash);
             
-            //send signal to other player ~ as instantaneous action
-            if(hasEmitJump)
-            {
-                p2.Input.SetKey(InputMap.JUMP, true);
-            }
-            if(hasEmitDash)
-            {
-                p2.Input.SetKey(InputMap.DASH, true);
-            }
+            ////send signal to other player ~ as instantaneous action
+            //if(hasEmitJump)
+            //{
+            //    p2.Input.SetKey(InputMap.JUMP, true);
+            //}
+            //if(hasEmitDash)
+            //{
+            //    p2.Input.SetKey(InputMap.DASH, true);
+            //}
 
             //TODO: radial signal transmission where circle collider expands over time at a fixed rate and distance
 
@@ -65,14 +65,14 @@ public class MonitorReceiver : MonoBehaviour {
             p2.Input.SetKey(InputMap.EMIT_DASH, hasEmitDash);
 
             //send signal to other player ~ as instantaneous action
-            if (hasEmitJump)
-            {
-                p1.Input.SetKey(InputMap.JUMP, true);
-            }
-            if (hasEmitDash)
-            {
-                p1.Input.SetKey(InputMap.DASH, true);
-            }
+            //if (hasEmitJump)
+            //{
+            //    p1.Input.SetKey(InputMap.JUMP, true);
+            //}
+            //if (hasEmitDash)
+            //{
+            //    p1.Input.SetKey(InputMap.DASH, true);
+            //}
         }
     }
 
