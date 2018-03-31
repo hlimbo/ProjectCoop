@@ -4,7 +4,6 @@ using UnityEngine;
 using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 
-
 public class MonitorReceiver : MonoBehaviour {
 
     public const int MAX_PLAYERS = 2;
